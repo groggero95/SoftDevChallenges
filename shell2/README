@@ -1,0 +1,30 @@
+       -----------====== CHALLENGE ======-----------
+
+Your goal is to check the authentication log to spot attempts to login into
+your machine (over ssh) by bruteforcing the password. Any internet-facing
+machine routinely receives many of such attempts, which are typically
+harmless... unless a user has a very simple password, of course :)
+
+In this folder you find a very short snippet of a real auth log file.
+To achieve your objective, you want to write e command that identifies
+IP addresses from which you received at least one correct login and a
+number of failed login attempts greater than the number of successful ones.
+The output should contain, for each row, the IP, the number of failed
+attempts, and the number of successful one.
+
+For instance, if your command is in solution.sh, the command:
+> cat auth.log | bash solution.sh 
+
+should print:
+
+151.62.163.222 3 1
+10.0.0.202 19 2
+
+         -----------====== SUBMISSION ======-----------
+
+Submit a text file containing in the first line your command
+as you would write it on the shell. Your command will be tested invoking:
+
+> cat logfile | bash yourfile
+
+

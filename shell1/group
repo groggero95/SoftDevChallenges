@@ -1,0 +1,7 @@
+root:x:0:
+daemon:x:1:
+adm:x:4:corrado,davide,yves
+cdrom:x:24:corrado,davide
+plugdev:x:46:corrado,davide,test
+gdb:x:1002:Xol,omar,luke,eigenvalue,nobody,test,test2
+alex:x:1075:
