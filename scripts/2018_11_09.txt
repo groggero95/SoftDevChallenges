@@ -1,0 +1,82 @@
+Used to print the 10 most used commands:
+
+	history | tail
+
+Since we need a column, awk is nice
+
+	history | awk ' {print $2}' | sort | uniq -c | sort -n 
+
+Maybe they're piped:
+
+	history | grep -o '\|[]*[^ ]+' | grep '[a-zA-Z].*' | sort | uniq -c | sort -n
+
+To extract everything that is in one command, in the pipe:
+It is hard to use a regexp for this purpose
+ 
+	history | sed 's_|_\n 1111 _g' | awk ' {print $2}' | sort | uniq -c | sort -n 
+
+The sed is used to break into many lines, adding a number to keep the same format as before 
+ 
+
+
+Packages installed in the last year
+	cat dpkg.log | grep -i "install " | awk ' {print $1}' | uniq -c 
+	
+
+Modify text file -> replace characters with "tr"
+
+	cat command.txt | tr -d -c 'a-zA-Z \n'
+	we deleted all punctuations, saving letters, space, newline
+
+	cat command.txt | grep ' ([a-zA-Z]+) \1 '
+	We needed a space after to differentiate for words	 
+	
+	cat command.txt | sed -r 's/ ([a-zA-Z]+) \1 /\1/'
+	
+Print the longest word
+	cat command.txt | tr -d -c 'a-zA-Z \n' ' ' | fmt -w l | awk ' {print length($0), $0}' | sort -n
+	
+Print the paragraph that contain a certain word:
+	we may use 'sed' to select ranges, but it doesn't work around.
+	best way is to use awk.
+	cat command.txt | awk 'BEGIN {RS=""; FS="\n"} /LIVE/ {print $0} '
+	cat command.txt | awk 'BEGIN {RS="";} /LIVE/ {print $0} '
+
+-----------------------------------------------------------------------------------
+	
+C file modification
+Change copyright in 2nd row
+	cat ar.h | sed '2s/2010/2018'
+
+Change command format /* */ to //
+	cat ar.h | sed 's_/\*(.*)\*/_//\1_ ' -- forse g alla fine per global?
+
+Move inline comments to previous line.
+	cat ar.h | sed -r 's_(.*)/\*(.*)_ /*\2\n\1_'
+	
+	
+Using ls -l print total file size grouped by file extension:
+	not trivial since file may not have extension
+	ls -l | awk 'NF > 4 {print $NF}'
+	ls -l | awk 'NF > 4 {total[$NF] += $5}' END {for (ext in total){print total[ext], ent}}'
+	
+	Not consider file with no file extension
+	ls -l | grep '\.[^ ]+$'  | tr '.' ' ' | awk 'NF > 4 {total[$NF] += $5}' END {for (ext in total){print total[ext], ent}}'
+	
+------------------------------------------------------------------------------------
+
+	find /proc -iname "status"
+	find /proc -type d -maxdepth 1 -> avoid subdirectories
+	find /proc -type d -maxdepth 1 | grep '[0-9]+$' -> folder named with a number
+	find /proc -type d -maxdepth 1 | grep '[0-9]+$' | while read path: do cat $path/status | grep "Name|Threads"; done -> extract Name & Threads
+	find /proc -type d -maxdepth 1 | grep '[0-9]+$' | while read path: do cat $path/status | grep "Name|Threads" | sed 's/^.*:[^a-zA-Z0-9]+//'; done  -> get on a single line
+	find /proc -type d -maxdepth 1 | grep '[0-9]+$' | while read path: do cat $path/status | grep "Name|Threads" | sed 's/^.*:[^a-zA-Z0-9]+//'; done  > /tmp/output
+	
+	-------------------------------
+	cat /tmp/output | awk 'NR%2==0 {tmp$0} NR%2==1 {print tmp, $0}'
+	
+------------------------------------------------------------------------------------
+Use Google translate from command line
+	that's complicated. I just want to go to the canteen.
+	
+
