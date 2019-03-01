@@ -8,6 +8,3 @@ For each challenges a `README` is given in the required folder, as long as the n
 * Development
 
 Moreover, ther're ordered according to their difficulties.
-
-## Contacts
-If you need some more information, drop me an email: [Giulio Roggero](mailto:Giulio.Roggero@eurecom.fr)
